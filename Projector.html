@@ -1,0 +1,204 @@
+<head>
+    <title>Projector</title>
+</head>
+<body>
+    <div class="container">
+        <div id="disk-selecting" class="disk-selecting"></div>
+        <div class="projection-container">
+            <div id="projection" class="projection"></div>
+            <p id="message"></p>
+        </div>
+    </div>
+</body>
+<style lang="css">
+    body {
+        margin: 0;
+        overflow: hidden;
+        background-color: black;
+    }
+
+    @keyframes infiniteRotateRight {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes infiniteRotateLeft {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(-360deg); }
+    }
+
+    @keyframes infiniteColor {
+        0% { background-color: #fca8a6; }
+        10% { background-color: #fcc8a6; }
+        20% { background-color: #fcf1a6; }
+        30% { background-color: #e9fca6; }
+        40% { background-color: #a6fcad; }
+        50% { background-color: #a6fcf6; }
+        60% { background-color: #a6e2fc; }
+        70% { background-color: #a6bcfc; }
+        80% { background-color: #eba6fc; }
+        90% { background-color: #fca6cd; }
+        100% { background-color: #fca8a6; }
+    }
+
+    #disk1 {
+        animation: infiniteRotateRight 10s linear infinite;
+    }
+
+    #disk2 {
+        animation: infiniteRotateLeft 20s linear infinite;
+    }
+
+    @media only screen and (max-width: 576px) {
+    }
+    @media only screen and (min-width: 576px) {
+    }
+    @media only screen and (min-width: 768px) {
+    }
+    @media only screen and (min-width: 992px) {
+        .disk-selecting {
+            height: 100%;
+            float: left;
+            padding: 1rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: top;
+        }
+
+        .disk-option {
+            height: 15%;
+            width: auto;
+            margin-bottom: 2rem;
+            filter: invert(100%);
+            opacity: 0.2;
+        }
+
+        .disk-option:hover {
+            opacity: 0.4;
+        }
+
+        .disk-option.active {
+            opacity: 0.6;
+        }
+
+        .disk-option.active:hover {
+            opacity: 0.4;
+        }
+
+        .projection-container {
+            width: 80%;
+            height: 100%;
+            float: right;
+            position: relative;
+        }
+
+        .projection {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vh;
+            height: 80vh;
+            border-radius: 50%;
+            border: 5px solid black;
+            animation: infiniteColor 30s linear infinite;
+        }
+
+        .projected-disk {
+            position: absolute;
+            top: -1%;
+            left: -1%;
+            width: 102%;
+        }
+
+        #message {
+            margin-top: 80%;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+    }
+    @media only screen and (min-width: 1200px) {
+    }
+
+</style>
+<script>
+    let disks = [
+        {
+            src: "./public/disk_1.png",
+            active: false
+        },
+        {
+            src: "./public/disk_2.png",
+            active: true
+        },
+        {
+            src: "./public/disk_3.png",
+            active: true
+        }
+    ]
+
+    function selectDisk(index) {
+        let activeDisks = 0;
+        for (let disk of disks) {
+            if (disk.active) {
+                activeDisks++;
+            }
+        }
+
+        // set or reset message;
+        let message = document.getElementById('message');
+        if (activeDisks >= 2 & !disks[index].active) {
+            message.innerHTML = "You can only select two disks at once! Please deselect a disk";
+            return;
+        } else {
+            message.innerHTML = '';
+        }
+
+        disks[index].active = !disks[index].active;
+        refreshDisks();
+        showOptionDisks();
+    }
+
+    function refreshDisks() {
+        let container = document.getElementById('projection');
+        container.innerHTML = '';
+        let activeDisks = 0;
+
+        for (let index in disks) {
+            if (disks[index].active) {
+                activeDisks++;
+                let img = document.createElement('img');
+                img.setAttribute('src', disks[index].src);
+                img.classList.add('projected-disk');
+                img.id = 'disk' + activeDisks;
+
+                container.appendChild(img);
+            }
+        }
+    }
+
+    function showOptionDisks() {
+        let container = document.getElementById('disk-selecting');
+        container.innerHTML = '';
+        for (let index in disks) {
+
+            let img = document.createElement('img');
+            img.setAttribute('src', disks[index].src);
+            img.classList.add('disk-option');
+            img.id = "disk-option-" + index;
+            img.addEventListener('click', function() {
+                selectDisk(index);
+            });
+
+            if (disks[index].active) {
+                img.classList.add('active');
+            }
+
+            container.appendChild(img);
+        }
+    }
+
+    showOptionDisks();
+</script>
