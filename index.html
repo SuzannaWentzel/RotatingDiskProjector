@@ -61,19 +61,19 @@
     }
     @media only screen and (min-width: 992px) {
         .disk-selecting {
-            height: 80%;
+            height: 100%;
             width: 20%;
             float: left;
             padding: 1rem;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            justify-content: top;
+            justify-content: space-evenly;
             align-items: center;
         }
 
         .disk-option {
-            height: 15%;
+            height: 10%;
             width: auto;
             margin-bottom: 2rem;
             filter: invert(100%);
@@ -148,7 +148,7 @@
     let disks = [
         {
             src: "./public/disk_1.png",
-            active: false
+            active: true
         },
         {
             src: "./public/disk_2.png",
@@ -156,10 +156,19 @@
         },
         {
             src: "./public/disk_3.png",
-            active: true
+            active: false
         },
         {
-            src: "./public/disk_4.png"
+            src: "./public/disk_5.png",
+            active: false
+        },
+        {
+            src: "./public/disk_4.png",
+            active: false
+        },
+        {
+            src: "./public/disk_6.png",
+            active: false
         }
     ]
 
